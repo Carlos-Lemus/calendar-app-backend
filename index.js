@@ -17,8 +17,10 @@ app.use(express.static("public"));
 app.use(express.json());
 
 // Rutas
+// Auth
 app.use("/api/auth", require("./router/auth"));
-
+// Events
+app.use("/api/events", require("./router/events"));
 
 // Escucha las peticiones
 app.listen(process.env.PORT, () => {

@@ -55,7 +55,7 @@ const loginUser = async(req, res = response) => {
 
         if(!user) {
             res.status(400).json({
-                ok: true,
+                ok: false,
                 msg: "El usuario no existe"
             });
         }
