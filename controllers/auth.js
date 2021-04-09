@@ -89,16 +89,24 @@ const loginUser = async(req, res = response) => {
 }
 
 const revalidToken = async(req, res) => {
+ 
+    try {
+        const { uid, name } = req;
+        
+        // Generar JWT
+        const token = await generateToken(uid, name);
     
-    const { uid, name } = req;
-    
-    // Generar JWT
-    const token = await generateToken(uid, name);
+        res.json({
+            ok: true,
+            uid, name, token
+        });
 
-    res.json({
-        ok: true,
-        uid, name, token
-    });
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            msg: "Error en el email o password"
+        })
+    }
 }
 
 module.exports = {

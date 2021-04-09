@@ -6,21 +6,30 @@ const { getEvents, createEvent, updateEvent, deleteEvent } = require("../control
 const { validJWT } = require("../middlewares/valid-jwt");
 const { check } = require("express-validator");
 const { validFields } = require("../middlewares/valid-fields");
+const { isDate } = require("../helpers/isDate");
 
 const router = Router();
 
 router.use(validJWT);
 
 router.get("/", getEvents);
+
 router.post("/",
     [
         check("title", "El titulo es obligatorio").not().isEmpty(),
-        check("start", "La fecha de inicio no es valida").isDate(),
-        check("end", "La fecha final no es valida").isDate(),
+        check('start', 'Fecha de inicio es obligatoria').custom(isDate),
+        check('end', 'Fecha de finalización es obligatoria').custom(isDate),
         validFields
     ]
     , createEvent);
-router.put("/:id", updateEvent);
+
+    router.put("/:id", [
+    check("title", "El titulo es obligatorio").not().isEmpty(),
+    check('start', 'Fecha de inicio es obligatoria').custom(isDate),
+    check('end', 'Fecha de finalización es obligatoria').custom(isDate),
+    validFields
+], updateEvent);
+
 router.delete("/:id", deleteEvent);
 
 module.exports = router;
